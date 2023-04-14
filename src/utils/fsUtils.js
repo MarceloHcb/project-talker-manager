@@ -16,4 +16,17 @@ const readTalkerData = async () => {
   return [];
 };
 
-module.exports = { readTalkerData };
+const readTalkerDatailData = async (talkerId) => {
+  try {
+    const talker = await readTalkerData();
+    const talkerDetail = talker.find(({ id }) => id === +talkerId);
+    return talkerDetail;
+  } catch (err) {
+console.log(err);
+  }
+};
+
+module.exports = { 
+  readTalkerData,
+  readTalkerDatailData,
+ };
