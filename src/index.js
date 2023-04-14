@@ -1,5 +1,5 @@
 const express = require('express');
-const { readTalkerData, readTalkerDatailData } = require('./utils/fsUtils');
+const { readTalkerData, readTalkerDatailData, PostTalker } = require('./utils/fsUtils');
 
 const app = express();
 app.use(express.json());
@@ -28,4 +28,10 @@ app.get('/talker/:id', async (req, res) => {
     return res.status(200).json(data);
   }
   return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });  
+});
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  const result = PostTalker(email, password);
+  return res.status(200).json({ token: result });
 });
