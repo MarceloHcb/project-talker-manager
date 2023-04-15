@@ -1,6 +1,6 @@
 const express = require('express');
 const { readTalkerData, readTalkerDatailData, PostLoginTalker,
-   PostNewTalker, updateTalker } = require('./utils/fsUtils');
+   PostNewTalker, updateTalker, deleteTalker } = require('./utils/fsUtils');
 const { emailValidation, passwordValidation, tokenValidator,
    nameValidation, ageValidation, talkValidation, idValidation } = require('./utils/validator');
 // const generateRandomToken = require('./utils/tokenGeneretor');
@@ -52,4 +52,10 @@ ageValidation, talkValidation, tokenValidator, async (req, res) => {
   const { name, age, talk } = req.body;
  const talker = await updateTalker(id, name, age, talk);
  return res.status(200).json(talker);
+});
+
+app.delete('/talker/:id', tokenValidator, async (req, res) => {
+  const { id } = req.params;
+  await deleteTalker(id);
+  return res.status(204).end();
 });

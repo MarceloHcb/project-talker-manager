@@ -77,10 +77,23 @@ const updateTalker = async (id, name, age, talk) => {
   }
 };
 
+const deleteTalker = async (id) => {
+  const allTalkers = await readTalkerData();
+  const newTalkerList = JSON.stringify(allTalkers.filter((talker) => talker.id !== Number(id)));
+  
+  try {
+    await fs.writeFile(path.resolve(__dirname, TALKER_DATA_PATH), newTalkerList);
+    return false;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = { 
   readTalkerData,
   readTalkerDatailData,
   PostLoginTalker,
   PostNewTalker,
   updateTalker,
+  deleteTalker,
  };

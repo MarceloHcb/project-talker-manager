@@ -28,7 +28,7 @@ const passwordValidation = (req, res, next) => {
       return res.status(stat).json({ message: `${msg}` });
     }
   };
-  const notNullRate = (variable, stat, msg, res) => {
+  const notUndefined = (variable, stat, msg, res) => {
     if (variable === undefined) {
       return res.status(stat).json({ message: `${msg}` });
     }
@@ -71,7 +71,7 @@ const passwordValidation = (req, res, next) => {
       return res.status(400).json({ message:
          'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
     } 
-    notNullRate(talk.rate, 400, 'O campo "rate" é obrigatório', res);
+    notUndefined(talk.rate, 400, 'O campo "rate" é obrigatório', res);
    
     if (!Number.isInteger(talk.rate) || talk.rate < 1 || talk.rate > 5) {
       return res.status(400).json({ message: 
