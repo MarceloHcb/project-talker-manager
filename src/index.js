@@ -1,6 +1,6 @@
 const express = require('express');
 const { readTalkerData, readTalkerDatailData, PostLoginTalker,
-   PostNewTalker, updateTalker, deleteTalker } = require('./utils/fsUtils');
+   PostNewTalker, updateTalker, deleteTalker, searchTalker } = require('./utils/fsUtils');
 const { emailValidation, passwordValidation, tokenValidator,
    nameValidation, ageValidation, talkValidation, idValidation } = require('./utils/validator');
 // const generateRandomToken = require('./utils/tokenGeneretor');
@@ -22,6 +22,16 @@ app.listen(PORT, () => {
 app.get('/talker', async (_req, res) => {
   const data = await readTalkerData();
   return res.status(200).json(data);
+});
+
+app.get('/talker/search', tokenValidator, async (req, res) => {
+  const searchTerm = req.query.q;  
+   if (!searchTerm || searchTerm === '') {
+     const data = await readTalkerData();
+   return res.status(200).json(data);
+   }
+  const talkersArr = await searchTalker(searchTerm);
+  return res.status(200).json(talkersArr);
 });
 
 app.get('/talker/:id', async (req, res) => {

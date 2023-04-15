@@ -3,7 +3,7 @@ const path = require('path');
 
 const TALKER_DATA_PATH = '../talker.json';
 
-const readTalkerData = async () => {
+const readTalkerData = async () => {  
   try {
     const resolve = await fs.readFile(
       path.resolve(__dirname, TALKER_DATA_PATH),
@@ -11,7 +11,7 @@ const readTalkerData = async () => {
     const data = JSON.parse(resolve);
     return data;
   } catch (err) {
-    console.log(err); 
+    console.log(err);
   }
   return [];
 };
@@ -22,7 +22,7 @@ const readTalkerDatailData = async (talkerId) => {
     const talkerDetail = talker.find(({ id }) => id === +talkerId);
     return talkerDetail;
   } catch (err) {
-console.log(err);
+    console.log(err);
   }
 };
 
@@ -38,7 +38,7 @@ const tokenGenerator = (email, password) => {
   return randomToken;
 };
 
-const PostLoginTalker = (email, password) => {  
+const PostLoginTalker = (email, password) => {
   const randomToken = tokenGenerator(email, password);
   return randomToken;
 };
@@ -50,27 +50,33 @@ const PostNewTalker = async (name, age, talk) => {
       name,
       age,
       id: oldTalkes[oldTalkes.length - 1].id + 1,
-      talk,      
-    };    
+      talk,
+    };
     const oldWithNewTalkers = JSON.stringify([...oldTalkes, newTalker]);
-    await fs.writeFile(path.resolve(__dirname, TALKER_DATA_PATH), oldWithNewTalkers);
+    await fs.writeFile(
+      path.resolve(__dirname, TALKER_DATA_PATH),
+      oldWithNewTalkers,
+    );
     return newTalker;
   } catch (err) {
     console.log(err);
   }
 };
-const updateTalker = async (id, name, age, talk) => {  
+const updateTalker = async (id, name, age, talk) => {
   try {
     const allTalkers = await readTalkerData();
-  const talkerToUpdate = allTalkers.filter((tlk) => Number(tlk.id) !== Number(id));
-  const newTalker = {
-    name,
-    age,
-    id: Number(id),
-    talk,  
-  };
-  const newTalkerList = JSON.stringify([...talkerToUpdate, newTalker]);  
-      await fs.writeFile(path.resolve(__dirname, TALKER_DATA_PATH), newTalkerList);
+    const talkerToUpdate = allTalkers.filter((tlk) => Number(tlk.id) !== Number(id));
+    const newTalker = {
+      name,
+      age,
+      id: Number(id),
+      talk,
+    };
+    const newTalkerList = JSON.stringify([...talkerToUpdate, newTalker]);
+    await fs.writeFile(
+      path.resolve(__dirname, TALKER_DATA_PATH),
+      newTalkerList,
+    );
     return newTalker;
   } catch (err) {
     console.log(err);
@@ -79,21 +85,37 @@ const updateTalker = async (id, name, age, talk) => {
 
 const deleteTalker = async (id) => {
   const allTalkers = await readTalkerData();
-  const newTalkerList = JSON.stringify(allTalkers.filter((talker) => talker.id !== Number(id)));
-  
+  const newTalkerList = JSON.stringify(
+    allTalkers.filter((talker) => talker.id !== Number(id)),
+  );
   try {
-    await fs.writeFile(path.resolve(__dirname, TALKER_DATA_PATH), newTalkerList);
+    await fs.writeFile(
+      path.resolve(__dirname, TALKER_DATA_PATH),
+      newTalkerList,
+    );
     return false;
   } catch (err) {
     console.log(err);
   }
 };
 
-module.exports = { 
+const searchTalker = async (searchTerm) => {
+  try {    
+    const allTalkers = await readTalkerData();    
+    const filteredTalker = allTalkers.filter(({ name }) =>
+      name.includes(searchTerm));      
+    return filteredTalker;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = {
   readTalkerData,
   readTalkerDatailData,
   PostLoginTalker,
   PostNewTalker,
   updateTalker,
   deleteTalker,
- };
+  searchTalker,
+};
