@@ -38,13 +38,32 @@ const tokenGenerator = (email, password) => {
   return randomToken;
 };
 
-const PostTalker = (email, password) => {  
+const PostLoginTalker = (email, password) => {  
   const randomToken = tokenGenerator(email, password);
   return randomToken;
+};
+
+const PostNewTalker = async (name, age, talk) => {
+  try {
+    const oldTalkes = await readTalkerData();
+    const newTalker = {
+      name,
+      age,
+      id: oldTalkes[oldTalkes.length - 1].id + 1,
+      talk,      
+    };
+    console.log(new Date(talk.watchedAt));
+    const oldWithNewTalkers = JSON.stringify([...oldTalkes, newTalker]);
+    await fs.writeFile(path.resolve(__dirname, TALKER_DATA_PATH), oldWithNewTalkers);
+    return newTalker;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 module.exports = { 
   readTalkerData,
   readTalkerDatailData,
-  PostTalker,
+  PostLoginTalker,
+  PostNewTalker,
  };
