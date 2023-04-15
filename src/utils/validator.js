@@ -1,3 +1,5 @@
+const { readTalkerData } = require('./fsUtils');
+
 const passwordValidation = (req, res, next) => {
     const { password } = req.body;
     if (!password) {
@@ -78,6 +80,16 @@ const passwordValidation = (req, res, next) => {
     next();
   };
 
+  const idValidation = async (req, res, next) => {
+    const { id } = req.params;
+    const allTalkers = await readTalkerData();
+    const validID = allTalkers.some((talker) => Number(talker.id) === Number(id));    
+    if (!validID) {
+      return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    }
+    return next();
+  };
+
   module.exports = {
     passwordValidation,
     emailValidation,
@@ -85,4 +97,5 @@ const passwordValidation = (req, res, next) => {
     nameValidation,
     ageValidation,
     talkValidation,
+    idValidation,
   };

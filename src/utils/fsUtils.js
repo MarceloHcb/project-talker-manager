@@ -51,10 +51,26 @@ const PostNewTalker = async (name, age, talk) => {
       age,
       id: oldTalkes[oldTalkes.length - 1].id + 1,
       talk,      
-    };
-    console.log(new Date(talk.watchedAt));
+    };    
     const oldWithNewTalkers = JSON.stringify([...oldTalkes, newTalker]);
     await fs.writeFile(path.resolve(__dirname, TALKER_DATA_PATH), oldWithNewTalkers);
+    return newTalker;
+  } catch (err) {
+    console.log(err);
+  }
+};
+const updateTalker = async (id, name, age, talk) => {  
+  try {
+    const allTalkers = await readTalkerData();
+  const talkerToUpdate = allTalkers.filter((tlk) => Number(tlk.id) !== Number(id));
+  const newTalker = {
+    name,
+    age,
+    id: Number(id),
+    talk,  
+  };
+  const newTalkerList = JSON.stringify([...talkerToUpdate, newTalker]);  
+      await fs.writeFile(path.resolve(__dirname, TALKER_DATA_PATH), newTalkerList);
     return newTalker;
   } catch (err) {
     console.log(err);
@@ -66,4 +82,5 @@ module.exports = {
   readTalkerDatailData,
   PostLoginTalker,
   PostNewTalker,
+  updateTalker,
  };
