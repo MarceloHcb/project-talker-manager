@@ -99,24 +99,22 @@ const deleteTalker = async (id) => {
   }
 };
 
-const searchTalker = async (searchTerm, rateTerm) => {
-  try {
-    const allTalkers = await readTalkerData();    
-    const filterdRate = allTalkers.filter(({ talk }) => talk.rate === Number(rateTerm));
-    const filteredTerm = allTalkers.filter(({ name }) =>
-      name.includes(searchTerm));      
-      const filteredTermAndRate = allTalkers
-      .filter(({ name, talk }) => talk.rate === Number(rateTerm) && name.includes(searchTerm));
-      if (rateTerm && searchTerm) {
-        return filteredTermAndRate;
-      }  
-      if (rateTerm) {          
-        return filterdRate;
-      }
-    return filteredTerm;
-  } catch (err) {
-    console.log(err);
-  }
+const searchTermFilter = (talker, searchTerm) => !searchTerm || talker.name.includes(searchTerm);
+
+const rateTermFilter = (talker, rateTerm) => !rateTerm || talker.talk.rate === Number(rateTerm);
+
+const dateTermFilter = (talker, dateTerm) => !dateTerm || talker.talk.watchedAt === dateTerm;
+
+const searchTalker = async (searchTerm, rateTerm, dateTerm) => {
+  const allTalkers = await readTalkerData();
+  const filteredTalkers = allTalkers.filter((talker) => {
+    const search = searchTermFilter(talker, searchTerm);
+    const rate = rateTermFilter(talker, rateTerm);
+    const date = dateTermFilter(talker, dateTerm);
+    return search && rate && date;
+  });
+
+  return filteredTalkers;
 };
 
 module.exports = {
@@ -125,6 +123,6 @@ module.exports = {
   PostLoginTalker,
   PostNewTalker,
   updateTalker,
-  deleteTalker,
+  deleteTalker,  
   searchTalker,
 };

@@ -78,6 +78,17 @@ const passwordValidation = (req, res, next) => {
     }    
     next();
   };
+  
+  const dateValidator = (req, res, next) => {    
+    const dateTerm = req.query.date;
+    const dataRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;   
+    if (dateTerm && !dataRegex.test(dateTerm)) {
+      return res.status(400).json({ message:
+         'O parâmetro "date" deve ter o formato "dd/mm/aaaa"' });
+    }   
+    return next();
+  };
+
   const intRateValidator = (req, res, next) => {      
     const rateTerm = req.query.rate;
     const intRate = Number(rateTerm);
@@ -98,6 +109,18 @@ const passwordValidation = (req, res, next) => {
     return next();
   };
 
+  const termsValidator = async (req, res, next) => {
+   const searchTerm = req.query.q;   
+   const dateTerm = req.query.date;
+  
+  if ((!searchTerm === undefined || searchTerm === '')
+   || (!dateTerm === undefined || dateTerm === '')) {
+    const data = await readTalkerData();
+    return res.status(200).json(data);
+  }   
+    next();
+  };
+
   module.exports = {
     passwordValidation,
     emailValidation,
@@ -107,4 +130,6 @@ const passwordValidation = (req, res, next) => {
     talkValidation,
     idValidation,
     intRateValidator,
+    dateValidator,
+    termsValidator,
   };
