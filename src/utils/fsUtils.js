@@ -99,12 +99,21 @@ const deleteTalker = async (id) => {
   }
 };
 
-const searchTalker = async (searchTerm) => {
-  try {    
+const searchTalker = async (searchTerm, rateTerm) => {
+  try {
     const allTalkers = await readTalkerData();    
-    const filteredTalker = allTalkers.filter(({ name }) =>
+    const filterdRate = allTalkers.filter(({ talk }) => talk.rate === Number(rateTerm));
+    const filteredTerm = allTalkers.filter(({ name }) =>
       name.includes(searchTerm));      
-    return filteredTalker;
+      const filteredTermAndRate = allTalkers
+      .filter(({ name, talk }) => talk.rate === Number(rateTerm) && name.includes(searchTerm));
+      if (rateTerm && searchTerm) {
+        return filteredTermAndRate;
+      }  
+      if (rateTerm) {          
+        return filterdRate;
+      }
+    return filteredTerm;
   } catch (err) {
     console.log(err);
   }

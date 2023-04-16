@@ -1,8 +1,8 @@
 const express = require('express');
 const { readTalkerData, readTalkerDatailData, PostLoginTalker,
    PostNewTalker, updateTalker, deleteTalker, searchTalker } = require('./utils/fsUtils');
-const { emailValidation, passwordValidation, tokenValidator,
-   nameValidation, ageValidation, talkValidation, idValidation } = require('./utils/validator');
+const { emailValidation, passwordValidation, tokenValidator, nameValidation,
+   ageValidation, talkValidation, idValidation, intRateValidator } = require('./utils/validator');
 // const generateRandomToken = require('./utils/tokenGeneretor');
 const app = express();
 app.use(express.json());
@@ -24,13 +24,14 @@ app.get('/talker', async (_req, res) => {
   return res.status(200).json(data);
 });
 
-app.get('/talker/search', tokenValidator, async (req, res) => {
-  const searchTerm = req.query.q;  
-   if (!searchTerm || searchTerm === '') {
-     const data = await readTalkerData();
-   return res.status(200).json(data);
-   }
-  const talkersArr = await searchTalker(searchTerm);
+app.get('/talker/search', tokenValidator, intRateValidator, async (req, res) => {
+  const searchTerm = req.query.q;
+  const rateTerm = req.query.rate;
+  if (searchTerm && (!searchTerm || searchTerm === '')) {
+    const data = await readTalkerData();
+    return res.status(200).json(data);
+  }
+  const talkersArr = await searchTalker(searchTerm, rateTerm);  
   return res.status(200).json(talkersArr);
 });
 

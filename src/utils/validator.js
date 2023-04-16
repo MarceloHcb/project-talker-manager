@@ -71,15 +71,23 @@ const passwordValidation = (req, res, next) => {
       return res.status(400).json({ message:
          'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
     } 
-    notUndefined(talk.rate, 400, 'O campo "rate" é obrigatório', res);
-   
+    notUndefined(talk.rate, 400, 'O campo "rate" é obrigatório', res);   
     if (!Number.isInteger(talk.rate) || talk.rate < 1 || talk.rate > 5) {
       return res.status(400).json({ message: 
         'O campo "rate" deve ser um número inteiro entre 1 e 5' });
     }    
     next();
   };
-
+  const intRateValidator = (req, res, next) => {      
+    const rateTerm = req.query.rate;
+    const intRate = Number(rateTerm);
+      if (rateTerm && (!Number.isInteger(intRate) || intRate < 1 || intRate > 5)) {
+        return res.status(400).json({ message: 
+          'O campo "rate" deve ser um número inteiro entre 1 e 5' });
+    }
+    return next();
+  }; 
+  
   const idValidation = async (req, res, next) => {
     const { id } = req.params;
     const allTalkers = await readTalkerData();
@@ -98,4 +106,5 @@ const passwordValidation = (req, res, next) => {
     ageValidation,
     talkValidation,
     idValidation,
+    intRateValidator,
   };
