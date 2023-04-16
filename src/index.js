@@ -1,9 +1,10 @@
 const express = require('express');
 const { readTalkerData, readTalkerDatailData, PostLoginTalker, PostNewTalker,
-   updateTalker, deleteTalker, searchTalker } = require('./utils/fsUtils');
+   updateTalker, deleteTalker, searchTalker, patchTalker } = require('./utils/fsUtils');
 const { emailValidation, passwordValidation, tokenValidator, nameValidation, ageValidation,
   talkValidation, idValidation, intRateValidator, dateValidator, 
-  termsValidator } = require('./utils/validator');
+  termsValidator, rateInterValidation,
+  rateUndefinedValitation } = require('./utils/validator');
 // const generateRandomToken = require('./utils/tokenGeneretor');
 const app = express();
 app.use(express.json());
@@ -72,4 +73,18 @@ app.delete('/talker/:id', tokenValidator, async (req, res) => {
   const { id } = req.params;
   await deleteTalker(id);
   return res.status(204).end();
+});
+
+app.patch('/talker/rate/:id', idValidation, tokenValidator, rateUndefinedValitation,
+ rateInterValidation,
+ async (req, res) => {
+  try {
+    const talkerId = req.params.id;
+    const newRate = req.body.rate;    
+    await patchTalker(newRate, talkerId);   
+    return res.status(204).end();
+  } catch (error) {   
+    console.error('erro ao atualizar o rate ->', error);
+    res.status(500).json({ error: 'erro ao atualizar o rate' });
+  }
 });

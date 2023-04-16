@@ -89,9 +89,27 @@ const passwordValidation = (req, res, next) => {
     return next();
   };
 
+  const rateUndefinedValitation = (req, res, next) => {
+    const rateTerm = req.body.rate;      
+    if (rateTerm === undefined || rateTerm === '') {   
+    return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
+  }  
+    return next();
+   };
+
+   const rateInterValidation = (req, res, next) => {
+    const rateTerm = req.body.rate;
+    const intRate = Number(rateTerm);  
+    if (!Number.isInteger(intRate) || intRate < Number(1) || intRate > Number(5)) {
+      return res.status(400).json({ message: 
+        'O campo "rate" deve ser um número inteiro entre 1 e 5' });
+     }
+     return next();
+   };
+   
   const intRateValidator = (req, res, next) => {      
     const rateTerm = req.query.rate;
-    const intRate = Number(rateTerm);
+    const intRate = Number(rateTerm);    
       if (rateTerm && (!Number.isInteger(intRate) || intRate < 1 || intRate > 5)) {
         return res.status(400).json({ message: 
           'O campo "rate" deve ser um número inteiro entre 1 e 5' });
@@ -118,7 +136,7 @@ const passwordValidation = (req, res, next) => {
     const data = await readTalkerData();
     return res.status(200).json(data);
   }   
-    next();
+   return next();
   };
 
   module.exports = {
@@ -132,4 +150,6 @@ const passwordValidation = (req, res, next) => {
     intRateValidator,
     dateValidator,
     termsValidator,
+    rateInterValidation,
+    rateUndefinedValitation,
   };

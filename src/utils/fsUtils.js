@@ -117,6 +117,21 @@ const searchTalker = async (searchTerm, rateTerm, dateTerm) => {
   return filteredTalkers;
 };
 
+const patchTalker = async (newRate, talkerId) => {
+  const allTalkers = await readTalkerData();
+  const talkerToUpdate = allTalkers.find(({ id }) => id === Number(talkerId));
+  const talkersWithout = allTalkers.filter(({ id }) => id !== Number(talkerId));
+  const newTalker = {
+   ...talkerToUpdate,
+   talk: {
+    ...talkerToUpdate.talk,
+    rate: newRate,
+   },
+  };
+  const newTalkerList = JSON.stringify([...talkersWithout, newTalker]);
+  await fs.writeFile(path.resolve(__dirname, TALKER_DATA_PATH), newTalkerList);
+};
+
 module.exports = {
   readTalkerData,
   readTalkerDatailData,
@@ -125,4 +140,5 @@ module.exports = {
   updateTalker,
   deleteTalker,  
   searchTalker,
+  patchTalker,
 };
