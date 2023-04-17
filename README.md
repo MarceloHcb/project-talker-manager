@@ -1,7 +1,8 @@
 # Projeto   Back-End  Talker-manager
 ## Requisitos do projeto - Criação de containers com docker-compose
+- Uso de container docker
 - Criação de end-points (Crud)
-- logica de filtros de consulta, 
+- Lógica de filtros de consulta, 
 ## Configuração do Mysql + express, listagem do banco de dados com Mysql
 
 ## <img src='https://img.shields.io/badge/MySQL-4479A1.svg?style=for-the-badge&logo=MySQL&logoColor=white'>  
