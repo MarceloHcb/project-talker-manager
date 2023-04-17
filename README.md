@@ -1,10 +1,10 @@
-# :construction: README em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto.
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+# Projeto   Back-End  Talker-manager
+## Requisitos do projeto - Criação de containers com docker-compose
+- Criação de end-points (Crud)
+- logica de filtros de consulta, 
+## Configuração do Mysql + express, listagem do banco de dados com Mysql
+
+## <img src='https://img.shields.io/badge/MySQL-4479A1.svg?style=for-the-badge&logo=MySQL&logoColor=white'>  
+<img src='https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white'>
+<img src='https://img.shields.io/badge/npm-CB3837.svg?style=for-the-badge&logo=npm&logoColor=white'>
+<img src='https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=for-the-badge&logo=JavaScript&logoColor=black'>
