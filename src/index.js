@@ -1,10 +1,12 @@
 const express = require('express');
+
 const { readTalkerData, readTalkerDatailData, PostLoginTalker, PostNewTalker,
    updateTalker, deleteTalker, searchTalker, patchTalker } = require('./utils/fsUtils');
 const { emailValidation, passwordValidation, tokenValidator, nameValidation, ageValidation,
   talkValidation, idValidation, intRateValidator, dateValidator, 
   termsValidator, rateInterValidation,
   rateUndefinedValitation } = require('./utils/validator');
+const { getAllTalkers } = require('./db/talkersDb');
 // const generateRandomToken = require('./utils/tokenGeneretor');
 const app = express();
 app.use(express.json());
@@ -19,6 +21,12 @@ app.get('/', (_request, response) => {
 
 app.listen(PORT, () => {
   console.log('Online');
+});
+
+app.get('/talker/db', async (_req, res) => {
+  const data = await getAllTalkers();
+  console.log(data);
+  return res.status(200).json(data);
 });
 
 app.get('/talker', async (_req, res) => {
